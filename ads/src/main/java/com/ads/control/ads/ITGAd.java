@@ -1283,7 +1283,7 @@ public class ITGAd {
     /**
      * Load native ad and auto populate ad to adPlaceHolder and hide containerShimmerLoading
      *
-     * @param activity
+     * @param ctx
      * @param id
      * @param layoutCustomNative
      * @param adPlaceHolder
@@ -1356,16 +1356,16 @@ public class ITGAd {
     /**
      * Result a ApNativeAd in onUnifiedNativeAdLoaded when native ad loaded
      *
-     * @param activity
+     * @param ctx
      * @param id
      * @param layoutCustomNative
      * @param callback
      */
-    public void loadNativeAdResultCallback(final Activity activity, String id,
+    public void loadNativeAdResultCallback(final Context ctx, String id,
                                            int layoutCustomNative, ITGAdCallback callback) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
-                Admob.getInstance().loadNativeAd(((Context) activity), id, new AdCallback() {
+                Admob.getInstance().loadNativeAd(ctx, id, new AdCallback() {
                     @Override
                     public void onUnifiedNativeAdLoaded(@NonNull NativeAd unifiedNativeAd) {
                         super.onUnifiedNativeAdLoaded(unifiedNativeAd);
@@ -1392,7 +1392,7 @@ public class ITGAd {
                 });
                 break;
             case ITGAdConfig.PROVIDER_MAX:
-                AppLovin.getInstance().loadNativeAd(activity, id, layoutCustomNative, new AppLovinCallback() {
+                AppLovin.getInstance().loadNativeAd(ctx, id, layoutCustomNative, new AppLovinCallback() {
                     @Override
                     public void onUnifiedNativeAdLoaded(MaxNativeAdView unifiedNativeAd) {
                         super.onUnifiedNativeAdLoaded(unifiedNativeAd);
@@ -1418,7 +1418,7 @@ public class ITGAd {
     /**
      * Populate Unified Native Ad to View
      *
-     * @param activity
+     * @param ctx
      * @param apNativeAd
      * @param adPlaceHolder
      * @param containerShimmerLoading
