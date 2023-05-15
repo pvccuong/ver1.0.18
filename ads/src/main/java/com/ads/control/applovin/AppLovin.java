@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ads.control.R;
 import com.ads.control.billing.AppPurchase;
 import com.ads.control.dialog.PrepareLoadingAdsDialog;
-import com.ads.control.funtion.AdCallback;
 import com.ads.control.event.ITGLogEventManager;
+import com.ads.control.funtion.AdCallback;
 import com.ads.control.funtion.AdType;
 import com.ads.control.util.SharePreferenceUtils;
 import com.applovin.mediation.MaxAd;
@@ -380,7 +380,7 @@ public class AppLovin {
             adListener.onAdClosed();
             return;
         }
-        interstitialSplash.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(context,ad, AdType.INTERSTITIAL));
+        interstitialSplash.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(context, ad, AdType.INTERSTITIAL));
         interstitialSplash.setListener(new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -572,7 +572,7 @@ public class AppLovin {
             return;
         }
 
-        interstitialAd.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(context,ad, AdType.INTERSTITIAL));
+        interstitialAd.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(context, ad, AdType.INTERSTITIAL));
         interstitialAd.setListener(new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
@@ -719,7 +719,7 @@ public class AppLovin {
         containerShimmer.setVisibility(View.VISIBLE);
         containerShimmer.startShimmer();
         MaxAdView adView = new MaxAdView(id, mActivity);
-        adView.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression( mActivity,ad, AdType.BANNER));
+        adView.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(mActivity, ad, AdType.BANNER));
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
         // Banner height on phones and tablets is 50 and 90, respectively
         int heightPx = mActivity.getResources().getDimensionPixelSize(R.dimen.banner_height);
@@ -785,7 +785,7 @@ public class AppLovin {
         containerShimmer.setVisibility(View.VISIBLE);
         containerShimmer.startShimmer();
         MaxAdView adView = new MaxAdView(id, mActivity);
-        adView.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(mActivity,ad, AdType.BANNER));
+        adView.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(mActivity, ad, AdType.BANNER));
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
         // Banner height on phones and tablets is 50 and 90, respectively
         int heightPx = mActivity.getResources().getDimensionPixelSize(R.dimen.banner_height);
@@ -897,7 +897,7 @@ public class AppLovin {
         nativeAdView = new MaxNativeAdView(binder, activity);
 
         MaxNativeAdLoader nativeAdLoader = new MaxNativeAdLoader(id, activity);
-        nativeAdLoader.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression( activity,ad, AdType.NATIVE));
+        nativeAdLoader.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(activity, ad, AdType.NATIVE));
         nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
@@ -934,7 +934,7 @@ public class AppLovin {
         nativeAdLoader.loadAd(nativeAdView);
     }
 
-    public void loadNativeAd(Activity activity, String id, int layoutCustomNative, AppLovinCallback callback) {
+    public void loadNativeAd(Context ctx, String id, int layoutCustomNative, AppLovinCallback callback) {
 
         if (AppPurchase.getInstance().isPurchased(context)) {
             callback.onAdClosed();
@@ -951,10 +951,10 @@ public class AppLovin {
                 .setCallToActionButtonId(R.id.ad_call_to_action)
                 .build();
 
-        nativeAdView = new MaxNativeAdView(binder, activity);
+        nativeAdView = new MaxNativeAdView(binder, ctx);
 
-        MaxNativeAdLoader nativeAdLoader = new MaxNativeAdLoader(id, activity);
-        nativeAdLoader.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression( activity,ad, AdType.NATIVE));
+        MaxNativeAdLoader nativeAdLoader = new MaxNativeAdLoader(id, ctx);
+        nativeAdLoader.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(ctx, ad, AdType.NATIVE));
         nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
@@ -1099,7 +1099,7 @@ public class AppLovin {
 
     public void showRewardAd(Activity activity, MaxRewardedAd maxRewardedAd, AppLovinCallback callback) {
         if (maxRewardedAd.isReady()) {
-            maxRewardedAd.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression( activity,ad, AdType.REWARDED));
+            maxRewardedAd.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(activity, ad, AdType.REWARDED));
             maxRewardedAd.setListener(new MaxRewardedAdListener() {
                 @Override
                 public void onRewardedVideoStarted(MaxAd ad) {
@@ -1163,7 +1163,7 @@ public class AppLovin {
 
     public void showRewardAd(Activity activity, MaxRewardedAd maxRewardedAd) {
         if (maxRewardedAd.isReady()) {
-            maxRewardedAd.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression( activity,ad, AdType.REWARDED));
+            maxRewardedAd.setRevenueListener(ad -> ITGLogEventManager.logPaidAdImpression(activity, ad, AdType.REWARDED));
             maxRewardedAd.showAd();
         } else {
             Log.e(TAG, "showRewardAd error -  reward ad not ready");

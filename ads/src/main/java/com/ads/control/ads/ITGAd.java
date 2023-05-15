@@ -1289,17 +1289,17 @@ public class ITGAd {
      * @param adPlaceHolder
      * @param containerShimmerLoading
      */
-    public void loadNativeAd(final Activity activity, String id,
+    public void loadNativeAd(final Context ctx, String id,
                              int layoutCustomNative, FrameLayout adPlaceHolder, ShimmerFrameLayout
                                      containerShimmerLoading, ITGAdCallback callback) {
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
-                Admob.getInstance().loadNativeAd(((Context) activity), id, new AdCallback() {
+                Admob.getInstance().loadNativeAd(ctx, id, new AdCallback() {
                     @Override
                     public void onUnifiedNativeAdLoaded(@NonNull NativeAd unifiedNativeAd) {
                         super.onUnifiedNativeAdLoaded(unifiedNativeAd);
                         callback.onNativeAdLoaded(new ApNativeAd(layoutCustomNative, unifiedNativeAd));
-                        populateNativeAdView(activity, new ApNativeAd(layoutCustomNative, unifiedNativeAd), adPlaceHolder, containerShimmerLoading);
+                        populateNativeAdView(ctx, new ApNativeAd(layoutCustomNative, unifiedNativeAd), adPlaceHolder, containerShimmerLoading);
                     }
 
                     @Override
@@ -1328,12 +1328,12 @@ public class ITGAd {
                 });
                 break;
             case ITGAdConfig.PROVIDER_MAX:
-                AppLovin.getInstance().loadNativeAd(activity, id, layoutCustomNative, new AppLovinCallback() {
+                AppLovin.getInstance().loadNativeAd(ctx, id, layoutCustomNative, new AppLovinCallback() {
                     @Override
                     public void onUnifiedNativeAdLoaded(MaxNativeAdView unifiedNativeAd) {
                         super.onUnifiedNativeAdLoaded(unifiedNativeAd);
                         callback.onNativeAdLoaded(new ApNativeAd(layoutCustomNative, unifiedNativeAd));
-                        populateNativeAdView(activity, new ApNativeAd(layoutCustomNative, unifiedNativeAd), adPlaceHolder, containerShimmerLoading);
+                        populateNativeAdView(ctx, new ApNativeAd(layoutCustomNative, unifiedNativeAd), adPlaceHolder, containerShimmerLoading);
                         callback.onAdImpression();
                     }
 
@@ -1423,7 +1423,7 @@ public class ITGAd {
      * @param adPlaceHolder
      * @param containerShimmerLoading
      */
-    public void populateNativeAdView(Activity activity, ApNativeAd apNativeAd, FrameLayout
+    public void populateNativeAdView(Context ctx, ApNativeAd apNativeAd, FrameLayout
             adPlaceHolder, ShimmerFrameLayout containerShimmerLoading) {
         if (apNativeAd.getAdmobNativeAd() == null && apNativeAd.getNativeView() == null) {
             containerShimmerLoading.setVisibility(View.GONE);
@@ -1432,7 +1432,7 @@ public class ITGAd {
         }
         switch (adConfig.getMediationProvider()) {
             case ITGAdConfig.PROVIDER_ADMOB:
-                @SuppressLint("InflateParams") NativeAdView adView = (NativeAdView) LayoutInflater.from(activity).inflate(apNativeAd.getLayoutCustomNative(), null);
+                @SuppressLint("InflateParams") NativeAdView adView = (NativeAdView) LayoutInflater.from(ctx).inflate(apNativeAd.getLayoutCustomNative(), null);
                 containerShimmerLoading.stopShimmer();
                 containerShimmerLoading.setVisibility(View.GONE);
                 adPlaceHolder.setVisibility(View.VISIBLE);
